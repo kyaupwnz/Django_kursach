@@ -1,0 +1,28 @@
+{% extends 'my_mail/base.html' %}
+<!DOCTYPE html>
+{% block content %}
+    <body>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Дата и время попытки</th>
+                <th scope="col">Статус попытки</th>
+                <th scope="col">Ответ сервера</th>
+                <th scope="col">Рассылка</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>{{ object.pk }}</td>
+                    <td>{{ object.date_time }}</td>
+                    <td>{{ object.attempt_status }}</td>
+                    <td>{{ object.server_response }}</td>
+                    <td>{{ object.mailing_list }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

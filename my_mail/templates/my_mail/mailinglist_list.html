@@ -1,0 +1,43 @@
+{% extends 'my_mail/base.html' %}
+<!DOCTYPE html>
+{% block content %}
+    <body>
+        <a class="nav-link" href="{% url 'my_mail:create_mailing_list' %}">Создать рассылку</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Тема письма</th>
+                <th scope="col">Время рассылки</th>
+                <th scope="col">Периодичность</th>
+                <th scope="col">Статус рассылки</th>
+                <th scope="col">Сообщение</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Начальная дата</th>
+                <th scope="col">Конечная дата</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td>{{ object.id}}</td>
+                    <td>{{ object.message.title }}</td>
+                    <td>{{ object.mail_time }}</td>
+                    <td>{{ object.periodicity }}</td>
+                    <td>{{ object.mail_status }}</td>
+                    <td>{{ object.message }}</td>
+                    <td>{% for client in object.client.all %}
+                        {{ client.email }}
+                        {% endfor %}</td>>
+                    <td>{{ object.start_date }}</td>
+                    <td>{{ object.end_date }}</td>
+                    <td>
+                        <a class="btn btn-info" href="{% url 'my_mail:update_mailing_list' object.pk %}">Обновить</a>
+                        <a class="btn btn-danger" href="{% url 'my_mail:delete_mailing_list' object.pk %}">Удалить</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}
