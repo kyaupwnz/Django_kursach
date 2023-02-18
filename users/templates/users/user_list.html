@@ -16,13 +16,16 @@
                 {% for object in object_list %}
                 <tr>
                     <td>{{ object.pk }}</td>
-                    <td>{{ object.full_name }}</td>
                     <td>{{ object.email }}</td>
-                    <td>{{ object.comment }}</td>
+                    <td>{{ object.phone_number }}</td>
+                    <td>{{ object.country }}</td>
                     <td>
-                        {% if user == object.owner %}
-                        <a class="btn btn-info" href="{% url 'my_mail:update_client' object.pk %}">Обновить</a>
-                        <a class="btn btn-danger" href="{% url 'my_mail:delete_client' object.pk %}">Удалить</a>
+                        {% if perms.users.set_is_active %}
+                            {% if object.is_active %}
+                                <a class="btn btn-info" href="{% url 'users:set_is_active' object.pk %}">Активный</a>
+                            {% else %}
+                                <a class="btn btn-info" href="{% url 'users:set_is_active' object.pk %}">Заблокированный</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

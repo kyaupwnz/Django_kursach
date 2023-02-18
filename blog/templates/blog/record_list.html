@@ -1,0 +1,15 @@
+{% extends 'my_mail/base.html' %}
+{% block content %}
+<h1>Статьи</h1>
+{% for object in object_list %}
+  <ul>
+    <li><a href="{% url 'blog:record_detail' object.slug %}">{{ object.title }}</a></li>
+          <p>Просмотры: {{object.views_counter}}</p>
+          <p>Дата публикации: {{ object.date_of_creation }}</p>
+          <p>{{object.content}}</p>
+          <image src="/media/Wlog_image/{{object.image}}" width=500 height="300"></image><br>
+  </ul>
+{% endfor %}
+    <tr>
+    <a href="{% url 'blog:create_record' %}">Создать</a>
+{% endblock %}

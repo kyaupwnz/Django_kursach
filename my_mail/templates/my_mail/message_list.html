@@ -13,13 +13,17 @@
             </thead>
             <tbody>
             {% for object in object_list %}
+                {% if user == object.owner or perms.my_mail.view_message %}
                 <tr>
                     <td>{{ object.pk }}</td>
                     <td>{{ object.title }}</td>
                     <td>{{ object.content }}</td>
                     <td>
+                    {% endif %}
+                        {% if user == object.owner %}
                         <a class="btn btn-info" href="{% url 'my_mail:update_message' object.pk %}">Обновить</a>
                         <a class="btn btn-danger" href="{% url 'my_mail:delete_message' object.pk %}">Удалить</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

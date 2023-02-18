@@ -1,0 +1,11 @@
+{% extends 'my_mail/base.html' %}
+<!DOCTYPE html>
+{% block content %}
+    <div class="card-body">
+    <h1>{{ object.title }}</h1>
+    <h3>{{ object.content }}</h3>
+    <h3>{{ object.date_of_creation }}</h3>
+    <a class="p-2 btn btn-outline-primary" href="{% url 'blog:update_record' object.slug %}">Обновить</a>
+    <a class="p-2 btn btn-outline-primary" href="{% url 'blog:delete_record' object.slug %}">Удалить</a>
+</div>
+{% endblock %}

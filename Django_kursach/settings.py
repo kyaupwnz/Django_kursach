@@ -9,24 +9,26 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 import psycopg2
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+dot_env = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=dot_env)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
+ENV_TYPE = os.getenv('ENV_TYPE', 'local')
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d@r3h7^h!u1fkqcfu9plf&9zl4(61nrxy0f^9kbnlp-((!r+)@'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.getenv('DEBUG', 'False') == 'True')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
 
 # Application definition
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'my_mail',
     'django_crontab',
+    'users',
+    'blog'
 ]
 
 MIDDLEWARE = [
@@ -135,6 +139,11 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = '/users/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 # EMAIL_HOST_USER = 'fuckup@oscarbot.ru'
@@ -142,6 +151,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'regareg198@yandex.ru'
 EMAIL_HOST_PASSWORD = 'uujfafiznkigoqpr'
 EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'My Domain <regareg198@yandex.ru>'
 
 DATE_INPUT_FORMATS = ['%d-%m-%Y']
 
@@ -149,4 +159,13 @@ CRONJOBS = [
     ('* * * * *', 'my_mail.mailsender.automatic_mailing')
 ]
 
+CACHE_ENABLED = os.getenv('CACHE_ENABLED')
+if CACHE_ENABLED:
+    CACHES = {
+        'default':
+            {
+                'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+                'LOCATION': 'redis://127.0.0.1:6379'
+            }
+    }
 
